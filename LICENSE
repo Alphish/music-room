@@ -1,11 +1,14 @@
-The following license terms apply:
+When it comes to software ownership:
 
- - Microsoft Public License (MS-PL) terms to `Alphicsh.MusicRoom\Alphicsh.Audio\Streaming\VorbisWaveReader.cs`
- - MIT License terms, as outlined below, to all other files
+ - NuGet packages belong to respective creators
+ - `Alphicsh.MusicRoom\Alphicsh.Audio\Streaming\VorbisWaveReader.cs` contains code mostly written by Andrew Ward
+ - the rest of source files has been written by me (with the help of Visual Studio Community 2017)
 
-If a source file has license terms pasted at the beginning, you should follow these terms.
+NuGet packages follow their own license terms.
+ 
+`Alphicsh.MusicRoom\Alphicsh.Audio\Streaming\VorbisWaveReader.cs` has its license terms pasted at the beginning, and you should follow these terms.
 
-Otherwise, it is covered by license terms outlined below.
+Other source code files are covered by license terms outlined below.
  
 --------------------
 
