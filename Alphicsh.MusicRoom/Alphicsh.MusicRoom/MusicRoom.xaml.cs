@@ -17,7 +17,9 @@ using System.Windows.Shapes;
 using Microsoft.WindowsAPICodePack.Dialogs;
 
 using Alphicsh.Audio.Streaming;
+using Alphicsh.MusicRoom.DataContext;
 using Alphicsh.MusicRoom.Model;
+using Alphicsh.MusicRoom.View;
 using Alphicsh.MusicRoom.ViewModel;
 
 namespace Alphicsh.MusicRoom
@@ -27,11 +29,11 @@ namespace Alphicsh.MusicRoom
     /// </summary>
     public partial class MusicRoom : Window
     {
-        MusicRoomViewModel ViewModel { get; } = new MusicRoomViewModel();
+        private MusicRoomDataContext Context { get; } = new MusicRoomDataContext();
 
         public MusicRoom()
         {
-            DataContext = ViewModel;
+            DataContext = Context;
             InitializeComponent();
         }
 
@@ -41,7 +43,7 @@ namespace Alphicsh.MusicRoom
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
-            ViewModel.Dispose();
+            Context.Dispose();
         }
 
         #region Playlist controls
@@ -65,29 +67,44 @@ namespace Alphicsh.MusicRoom
             if (result == CommonFileDialogResult.Ok)
             {
                 foreach (var filename in dialog.FileNames)
-                    ViewModel.Playlist.Add(new TrackViewModel(filename));
+                    Context.Playlist.Add(new TrackViewModel(filename));
+            }
+        }
+
+        // editing the currently selected track
+        private void EditButton_Click(object sender, RoutedEventArgs e)
+        {
+            var item = Context.SelectedItems.OfType<TrackViewModel>().FirstOrDefault();
+            if (item != null)
+            {
+                var window = new TrackEditWindow(Context, item);
+                window.ShowDialog();
             }
         }
 
         // removing the currently selected tracks
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
-            => ViewModel.Playlist.Remove(ViewModel.SelectedItems.Cast<IPlaylistItemViewModel>());
+            => Context.Playlist.Remove(Context.SelectedItems.Cast<IPlaylistItemViewModel>());
+
+        #endregion
+
+        #region Playback controls
 
         // playing the currently selected track (one of these, anyway)
         // if the track is playing already, it's reset
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
-            var item = ViewModel.SelectedItems.OfType<TrackViewModel>().First();
+            var item = Context.SelectedItems.OfType<TrackViewModel>().FirstOrDefault();
             if (item != null)
             {
                 var track = (item as TrackViewModel).Model as Track;
-                ViewModel.Player.Play(track, track.StreamProvider.CreateStream, true);
+                Context.Player.Play(track, track.StreamProvider.CreateStream, true);
             }
         }
 
         // stopping the currently played track
         private void StopButton_Click(object sender, RoutedEventArgs e)
-            => ViewModel.Player.Stop();
+            => Context.Player.Stop();
 
         #endregion
 
@@ -96,6 +113,6 @@ namespace Alphicsh.MusicRoom
         // so I'll just operate on these manually
         // what could possibly go wrong...
         private void PlaylistBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-            => ViewModel.SelectedItems = (sender as ListBox).SelectedItems.Cast<IPlaylistItemViewModel>().ToList();
+            => Context.SelectedItems = (sender as ListBox).SelectedItems.Cast<IPlaylistItemViewModel>().ToList();
     }
 }

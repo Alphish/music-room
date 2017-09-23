@@ -10,12 +10,12 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- The soundtrack controls -->
+        <!-- The playlist controls -->
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -23,8 +23,7 @@
 
             <Button Grid.Column="0" Click="AddButton_Click" Margin="4">Add</Button>
             <Button Grid.Column="1" Click="DeleteButton_Click" Margin="4">Delete</Button>
-            <Button Grid.Column="2" Click="PlayButton_Click" Margin="4">Play</Button>
-            <Button Grid.Column="3" Click="StopButton_Click" Margin="4">Stop</Button>
+            <Button Grid.Column="2" Click="EditButton_Click" Margin="4">Edit</Button>
         </Grid>
         
         <!-- The playlist selection -->
@@ -33,6 +32,23 @@
             ItemsSource="{Binding Playlist}"
             SelectionChanged="PlaylistBox_SelectionChanged"
             SelectionMode="Extended"
-            />
+            >
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Label Content="{Binding Name}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <!-- The playback controls -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Click="PlayButton_Click" Margin="4">Play</Button>
+            <Button Grid.Column="1" Click="StopButton_Click" Margin="4">Stop</Button>
+        </Grid>
     </Grid>
 </Window>

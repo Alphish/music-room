@@ -6,20 +6,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Alphicsh.MusicRoom.ViewModel
+using Alphicsh.MusicRoom.Model;
+using Alphicsh.MusicRoom.ViewModel;
+
+namespace Alphicsh.MusicRoom.DataContext
 {
     /// <summary>
-    /// Acts as the view model of the entire application.
+    /// Provides a context for the entire application.
     /// </summary>
-    public class MusicRoomViewModel : NotifyPropertyChanged, IDisposable
+    public class MusicRoomDataContext : NotifyPropertyChanged, IDisposable
     {
-        /// <summary>
-        /// Creates a default application view model.
-        /// </summary>
-        public MusicRoomViewModel()
+        public MusicRoomDataContext()
         {
             Player = new PlayerViewModel();
-            _Playlist = new PlaylistViewModel(new Model.Playlist() { Name = "Playlist", Path = ""} );
+            _Playlist = new PlaylistViewModel(new Playlist() );
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace Alphicsh.MusicRoom.ViewModel
         /// </summary>
         public IEnumerable<IPlaylistItemViewModel> SelectedItems
             { get => _SelectedItems; set => Set(nameof(SelectedItems), value); }
-        private IEnumerable<IPlaylistItemViewModel> _SelectedItems = null;
+        private IEnumerable<IPlaylistItemViewModel> _SelectedItems = new IPlaylistItemViewModel[0];
 
         /// <summary>
         /// Gets or sets the current playlist.

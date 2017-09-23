@@ -39,5 +39,37 @@ namespace Alphicsh.MusicRoom.Model
 
             return Path.GetFullPath(path);
         }
+
+        /// <summary>
+        /// Gets the relative path to the given playlist item, using its parent full path as a reference.
+        /// </summary>
+        /// <param name="item">The item to get the relative path of.</param>
+        /// <returns>The path relative to the parent's full path.</returns>
+        public static string GetRelativePath(this IPlaylistItem item)
+        {
+            if (item.Parent == null) return item.Path;
+            if (item.Path == "") return item.Path;
+
+            var parentPath = item.Parent.GetFullPath();
+            if (item.Parent.IncludesFilename) parentPath = Path.GetDirectoryName(parentPath);
+            var ownPath = Path.GetFullPath(Path.Combine(parentPath, item.Path));
+
+            var parentSegments = parentPath.Split(Path.DirectorySeparatorChar).ToList();
+            var ownSegments = ownPath.Split(Path.DirectorySeparatorChar).ToList();
+
+            // if the playlist item and parent are rooted at different places
+            // the only possible relative path is item's own path
+            if (parentSegments.First() != ownSegments.First())
+                return ownPath;
+
+            // going through the common segments
+            while (parentSegments.Any() && ownSegments.Any() && parentSegments.First() == ownSegments.First())
+            {
+                parentSegments.RemoveAt(0);
+                ownSegments.RemoveAt(0);
+            }
+
+            return string.Join("", Enumerable.Repeat(".." + Path.DirectorySeparatorChar, parentSegments.Count)) + string.Join(Path.DirectorySeparatorChar.ToString(), ownSegments);
+        }
     }
 }

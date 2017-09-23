@@ -31,16 +31,29 @@ namespace Alphicsh.MusicRoom.ViewModel
                 {
                     Model.Path = value;
                     Notify(nameof(Path));
+                    Notify(nameof(RelativePath));
                     Notify(nameof(FullPath));
                 }
             }
         }
 
         /// <summary>
-        /// Gets the absolute path to the item.
+        /// Retrieves the full path of the playlist item.
         /// </summary>
         public string FullPath
-            { get => Model.GetFullPath(); }
+            => Model.GetFullPath();
+
+        /// <summary>
+        /// Retrieves the full path of the playlist item parent.
+        /// </summary>
+        public string ParentPath
+            => Model.Parent != null ? Model.Parent.GetFullPath() : "";
+
+        /// <summary>
+        /// Retrieves the path of the playlist item relative to its parent.
+        /// </summary>
+        public string RelativePath
+            => Model.GetRelativePath();
 
         /// <summary>
         /// Gets the underlying model item.

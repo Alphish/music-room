@@ -40,6 +40,15 @@ namespace Alphicsh.MusicRoom.ViewModel
             InnerTrack.StreamProvider = new LoopStreamProvider(InnerTrack);
         }
 
+        /// <summary>
+        /// Creates a view model operating on a copied inner track.
+        /// </summary>
+        /// <param name="viewModel">The view model to copy the track from.</param>
+        public TrackViewModel(TrackViewModel viewModel)
+            : this(new Track(viewModel.InnerTrack))
+        {
+        }
+
         // the soundtrack file used
         private Track InnerTrack { get; }
 

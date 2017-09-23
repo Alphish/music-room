@@ -29,6 +29,16 @@ namespace Alphicsh.MusicRoom.ViewModel
         string FullPath { get; }
 
         /// <summary>
+        /// Retrieves the full path of the playlist item parent.
+        /// </summary>
+        string ParentPath { get; }
+
+        /// <summary>
+        /// Retrieves the path of the playlist item relative to its parent.
+        /// </summary>
+        string RelativePath { get; }
+
+        /// <summary>
         /// Gets the underlying model playlist item.
         /// </summary>
         IPlaylistItem Model { get; }
