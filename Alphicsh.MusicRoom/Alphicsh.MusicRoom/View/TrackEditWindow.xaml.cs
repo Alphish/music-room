@@ -38,6 +38,10 @@ namespace Alphicsh.MusicRoom.View
             copy = Context.CopyTrack;
             source.Name = copy.Name;
             source.Path = copy.Path;
+            if (copy.StreamProvider.IsValid)
+                source.StreamProvider = copy.StreamProvider;
+            else
+                MessageBox.Show("The loop provided is not valid. The previous loop will remain.");
 
             Close();
         }

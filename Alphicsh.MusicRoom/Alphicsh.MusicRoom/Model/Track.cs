@@ -21,7 +21,7 @@ namespace Alphicsh.MusicRoom.Model
         {
             Name = track.Name;
             Path = track.Path;
-            StreamProvider = track.StreamProvider;
+            StreamProvider = track.StreamProvider.Copy();
 
             Parent = track.Parent;
             foreach (var container in track.Containers)

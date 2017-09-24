@@ -23,6 +23,7 @@ namespace Alphicsh.MusicRoom.ViewModel
         public TrackViewModel(Track track)
         {
             InnerTrack = track;
+            _StreamProvider = new LoopStreamProviderViewModel(InnerTrack.StreamProvider as LoopStreamProvider);
         }
 
         /// <summary>
@@ -38,6 +39,7 @@ namespace Alphicsh.MusicRoom.ViewModel
             InnerTrack.Name = System.IO.Path.GetFileNameWithoutExtension(InnerTrack.Path);
 
             InnerTrack.StreamProvider = new LoopStreamProvider(InnerTrack);
+            _StreamProvider = new LoopStreamProviderViewModel(InnerTrack.StreamProvider as LoopStreamProvider);
         }
 
         /// <summary>
@@ -48,6 +50,24 @@ namespace Alphicsh.MusicRoom.ViewModel
             : this(new Track(viewModel.InnerTrack))
         {
         }
+
+        /// <summary>
+        /// Gets or sets the stream provider used by the track.
+        /// </summary>
+        public LoopStreamProviderViewModel StreamProvider
+        {
+            get => _StreamProvider;
+            set
+            {
+                if (_StreamProvider != value)
+                {
+                    _StreamProvider = value;
+                    InnerTrack.StreamProvider = value.Model;
+                    Notify(nameof(StreamProvider));
+                }
+            }
+        }
+        private LoopStreamProviderViewModel _StreamProvider;
 
         // the soundtrack file used
         private Track InnerTrack { get; }

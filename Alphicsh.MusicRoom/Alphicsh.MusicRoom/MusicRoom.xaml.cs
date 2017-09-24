@@ -98,7 +98,7 @@ namespace Alphicsh.MusicRoom
             if (item != null)
             {
                 var track = (item as TrackViewModel).Model as Track;
-                Context.Player.Play(track, track.StreamProvider.CreateStream, true);
+                Context.Player.Play(track.StreamProvider, track.StreamProvider.CreateStream, true);
             }
         }
 

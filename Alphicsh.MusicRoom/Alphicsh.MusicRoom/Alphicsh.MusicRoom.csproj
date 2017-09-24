@@ -76,18 +76,25 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\NumericWithDefaultConverter.cs" />
+    <Compile Include="Converters\SwitchConverter.cs" />
     <Compile Include="DataContext\TrackEditWindowDataContext.cs" />
     <Compile Include="Model\BasePlaylistContainer.cs" />
     <Compile Include="Model\IPlaylistItem_Extensions.cs" />
+    <Compile Include="Model\IStreamProvider_Extensions.cs" />
     <Compile Include="ViewModel\BasePlaylistItemViewModel.cs" />
     <Compile Include="ViewModel\IPlaylistContainerViewModel.cs" />
     <Compile Include="ViewModel\IPlaylistItemViewModel.cs" />
     <Compile Include="DataContext\MusicRoomDataContext.cs" />
+    <Compile Include="ViewModel\LoopStreamProviderViewModel.cs" />
     <Compile Include="ViewModel\NotifyPropertyChanged.cs" />
     <Compile Include="ViewModel\PlayerViewModel.cs" />
     <Compile Include="ViewModel\BasePlaylistContainerViewModel.cs" />
     <Compile Include="ViewModel\PlaylistViewModel.cs" />
     <Compile Include="ViewModel\TrackViewModel.cs" />
+    <Compile Include="View\LoopStreamProviderEditControl.xaml.cs">
+      <DependentUpon>LoopStreamProviderEditControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\PlaylistItemInfoEditControl.xaml.cs">
       <DependentUpon>PlaylistItemInfoEditControl.xaml</DependentUpon>
     </Compile>
@@ -106,6 +113,10 @@
       <DependentUpon>MusicRoom.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\LoopStreamProviderEditControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\PlaylistItemInfoEditControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

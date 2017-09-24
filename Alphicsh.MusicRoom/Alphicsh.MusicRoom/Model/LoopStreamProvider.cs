@@ -30,6 +30,20 @@ namespace Alphicsh.MusicRoom.Model
         }
 
         /// <summary>
+        /// Creates a copy of the given looping stream provider.
+        /// </summary>
+        /// <param name="provider">The provider to be copied.</param>
+        public LoopStreamProvider(LoopStreamProvider provider)
+            : this(provider.Track)
+        {
+            TrackStart = provider.TrackStart;
+            StreamLoopStart = provider.StreamLoopStart;
+            StreamLoopEnd = provider.StreamLoopEnd;
+            TrackEnd = provider.TrackEnd;
+            Loops = provider.Loops;
+        }
+
+        /// <summary>
         /// Gets or sets the track beginning position in samples, in relation to the track's original stream.
         /// If it's set to -1, the stream beginning position will be used.
         /// </summary>
