@@ -78,6 +78,11 @@ namespace Alphicsh.MusicRoom.ViewModel
                 if (_TrackLock == RangeLock.Length)
                     return;
 
+                // you cannot explicitly set a track to be of unknown length
+                // that's just silly
+                if (value == -1)
+                    return;
+
                 // if neither start or end are provided
                 // there is no reference point to base the length on
                 if (Model.TrackEnd == -1 && Model.TrackStart == -1)
@@ -209,6 +214,11 @@ namespace Alphicsh.MusicRoom.ViewModel
             set
             {
                 if (_LoopLock == RangeLock.Length)
+                    return;
+
+                // you cannot explicitly set a loop to be of unknown length
+                // that's just silly
+                if (value == -1)
                     return;
 
                 // if neither start or end are provided

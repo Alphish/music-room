@@ -32,6 +32,34 @@ namespace Alphicsh.MusicRoom.View
         // the loop stream provider being edited
         private LoopStreamProviderViewModel Provider => DataContext as LoopStreamProviderViewModel;
 
+        #region General events
+
+        // if the stream parameter is default, the text box is cleared
+        // I miiiight want to do an appropriate watermarked text box at some point
+        private void StreamParameter_GotFocus(object sender, RoutedEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            var binding = BindingOperations.GetBinding(textBox, TextBox.TextProperty);
+            if (binding.ConverterParameter.Equals(textBox.Text)) textBox.Text = "";
+        }
+
+        // registers the parameter value change while keeping text box focused on
+        private void StreamParameter_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                var textBox = sender as TextBox;
+
+                var expression = BindingOperations.GetBindingExpression(textBox, TextBox.TextProperty);
+                expression.UpdateSource();
+
+                var binding = BindingOperations.GetBinding(textBox, TextBox.TextProperty);
+                if (binding.ConverterParameter.Equals(textBox.Text)) textBox.Text = "";
+            }
+        }
+
+        #endregion
+
         #region Loop section events
 
         private void LockLoopStartButton_Click(object sender, RoutedEventArgs e)

@@ -115,6 +115,9 @@ namespace Alphicsh.Audio.Streaming
         /// </summary>
         public void Stop()
         {
+            if (CurrentOut == null)
+                return;
+
             CurrentOut.Stop();
             CurrentStream.Position = 0;
         }

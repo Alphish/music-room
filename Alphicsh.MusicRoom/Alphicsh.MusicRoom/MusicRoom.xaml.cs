@@ -49,7 +49,7 @@ namespace Alphicsh.MusicRoom
         #region Playlist controls
 
         // adding new tracks
-        private void AddButton_Click(object sender, RoutedEventArgs e)
+        private void AddTracksButton_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new CommonOpenFileDialog()
             {
@@ -72,7 +72,7 @@ namespace Alphicsh.MusicRoom
         }
 
         // editing the currently selected track
-        private void EditButton_Click(object sender, RoutedEventArgs e)
+        private void PlaylistItem_EditMenu_Click(object sender, RoutedEventArgs e)
         {
             var item = Context.SelectedItems.OfType<TrackViewModel>().FirstOrDefault();
             if (item != null)
@@ -83,7 +83,7 @@ namespace Alphicsh.MusicRoom
         }
 
         // removing the currently selected tracks
-        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        private void PlaylistItem_DeleteMenu_Click(object sender, RoutedEventArgs e)
             => Context.Playlist.Remove(Context.SelectedItems.Cast<IPlaylistItemViewModel>());
 
         #endregion

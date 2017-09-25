@@ -7,10 +7,18 @@
              xmlns:converters="clr-namespace:Alphicsh.MusicRoom.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="400">
+    
+    <!-- CONTROL RESOURCES -->
     <UserControl.Resources>
         <converters:SwitchConverter x:Key="SwitchConverter"/>
         <converters:NumericWithDefaultConverter x:Key="NumericConverter"/>
+        <Style TargetType="{x:Type TextBox}">
+            <EventSetter Event="KeyDown" Handler="StreamParameter_KeyDown"/>
+            <EventSetter Event="GotFocus" Handler="StreamParameter_GotFocus"/>
+        </Style>
     </UserControl.Resources>
+    
+    <!-- CONTROL BODY -->
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -38,6 +46,7 @@
                     <ColumnDefinition Width="32"/>
                 </Grid.ColumnDefinitions>
 
+                <!-- Track Start -->
                 <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" Margin="2">Start:</Label>
                 <TextBox Grid.Row="0" Grid.Column="1" Margin="4"
                          Text="{Binding TrackStart, Mode=TwoWay, Converter={StaticResource NumericConverter}, ConverterParameter='default'}"
@@ -47,6 +56,7 @@
                         Content="{Binding Path=TrackLock, Mode=OneWay, Converter={StaticResource SwitchConverter}, ConverterParameter='Start: 🔒; :🔓'}"
                         />
 
+                <!-- Track Length -->
                 <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Margin="2">Length:</Label>
                 <TextBox Grid.Row="1" Grid.Column="1" Margin="4"
                          Text="{Binding TrackLength, Mode=TwoWay, Converter={StaticResource NumericConverter}, ConverterParameter='unknown'}"
@@ -56,6 +66,7 @@
                         Content="{Binding Path=TrackLock, Mode=OneWay, Converter={StaticResource SwitchConverter}, ConverterParameter='Length: 🔒; :🔓'}"
                         />
 
+                <!-- Track End -->
                 <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Margin="2">End:</Label>
                 <TextBox Grid.Row="2" Grid.Column="1" Margin="4"
                          Text="{Binding TrackEnd, Mode=TwoWay, Converter={StaticResource NumericConverter}, ConverterParameter='default'}"
@@ -86,6 +97,7 @@
                     <ColumnDefinition Width="32"/>
                 </Grid.ColumnDefinitions>
 
+                <!-- Loop Start -->
                 <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" Margin="2">Start:</Label>
                 <TextBox Grid.Row="0" Grid.Column="1" Margin="4"
                          Text="{Binding StreamLoopStart, Mode=TwoWay, Converter={StaticResource NumericConverter}, ConverterParameter='default'}"
@@ -95,6 +107,7 @@
                         Content="{Binding Path=LoopLock, Mode=OneWay, Converter={StaticResource SwitchConverter}, ConverterParameter='Start: 🔒; :🔓'}"
                         />
 
+                <!-- Loop Length -->
                 <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Margin="2">Length:</Label>
                 <TextBox Grid.Row="1" Grid.Column="1" Margin="4"
                          Text="{Binding LoopLength, Mode=TwoWay, Converter={StaticResource NumericConverter}, ConverterParameter='unknown'}"
@@ -104,6 +117,7 @@
                         Content="{Binding Path=LoopLock, Mode=OneWay, Converter={StaticResource SwitchConverter}, ConverterParameter='Length: 🔒; :🔓'}"
                         />
 
+                <!-- Loop End -->
                 <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Margin="2">End:</Label>
                 <TextBox Grid.Row="2" Grid.Column="1" Margin="4"
                          Text="{Binding StreamLoopEnd, Mode=TwoWay, Converter={StaticResource NumericConverter}, ConverterParameter='default'}"
@@ -117,6 +131,7 @@
 
                 <Separator Grid.Row="4" Grid.ColumnSpan="3" Margin="4"/>
 
+                <!-- Loop Count -->
                 <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Right" Margin="2">Loops:</Label>
                 <TextBox Grid.Row="5" Grid.Column="1" Margin="4"
                          Text="{Binding Loops, Mode=TwoWay, Converter={StaticResource NumericConverter}, ConverterParameter='unlimited'}"

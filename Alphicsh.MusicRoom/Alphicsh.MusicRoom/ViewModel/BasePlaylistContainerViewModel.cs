@@ -139,14 +139,15 @@ namespace Alphicsh.MusicRoom.ViewModel
         /// <returns>true if all items have been removed, false otherwise</returns>
         public bool Remove(IEnumerable<IPlaylistItemViewModel> items)
         {
-            // setting up some useful structures, flags and variables
-            var set = new HashSet<IPlaylistItemViewModel>(items);
-            var changed = new List<IPlaylistItemViewModel>(set.Count);
+            if (!items.Any())
+                return true;
 
+            if (!items.Skip(1).Any())
+                return Remove(items.First());
+
+            // setting up useful variables
+            var set = new HashSet<IPlaylistItemViewModel>(items);
             IPlaylistItemViewModel item;
-            bool started = false;
-            bool isBlock = true;
-            int firstIndex = -1;
 
             // actually removing the items
             for (var i = Count-1; i >= 0; i--)
@@ -157,11 +158,7 @@ namespace Alphicsh.MusicRoom.ViewModel
                     set.Remove(item);
                     Items.RemoveAt(i);
                     InnerContainer.RemoveAt(i);
-                    changed.Insert(0, item);
-                    started = true;
-                    firstIndex = i;
                 }
-                else if (started) isBlock = false;
 
                 if (!set.Any()) break;
             }
@@ -169,8 +166,7 @@ namespace Alphicsh.MusicRoom.ViewModel
             // notification squad strikes again
             Notify(nameof(Count));
             Notify(IndexerName);
-            if (isBlock) CollectionRemoved(firstIndex, items);
-            else CollectionReset();
+            CollectionReset();
 
             return !set.Any();
         }
