@@ -24,5 +24,20 @@ namespace Alphicsh.MusicRoom.Model
         /// Indicates that the playlist includes a filename at the end of its path.
         /// </summary>
         public override bool IncludesFilename => true;
+
+        /// <summary>
+        /// Saves the playlist at the given location.
+        /// </summary>
+        /// <param name="path">The path to save the playlist at.</param>
+        public void Save(string path)
+            => Playlist_IO.Save(this, path);
+
+        /// <summary>
+        /// Loads a playlist from a given path.
+        /// </summary>
+        /// <param name="path">The path to load the playlist from.</param>
+        /// <returns>The loaded playlist.</returns>
+        public static Playlist Load(string path)
+            => Playlist_IO.Load(path);
     }
 }

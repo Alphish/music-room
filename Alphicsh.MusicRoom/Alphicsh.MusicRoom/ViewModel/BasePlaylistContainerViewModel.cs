@@ -16,10 +16,32 @@ namespace Alphicsh.MusicRoom.ViewModel
     /// </summary>
     public abstract class BasePlaylistContainerViewModel : BasePlaylistItemViewModel, IPlaylistContainerViewModel
     {
+        public BasePlaylistContainerViewModel(IPlaylistContainer innerContainer)
+        {
+            InnerContainer = innerContainer;
+            foreach (var item in InnerContainer)
+            {
+                switch (item)
+                {
+                    case Track track:
+                        Items.Add(new TrackViewModel(track));
+                        break;
+
+                    default:
+                        throw new NotSupportedException();
+                }
+            }
+        }
+
         /// <summary>
-        /// Gets the underlying model playlist container.
+        /// Gets the underlying playlist container model.
         /// </summary>
-        protected abstract IPlaylistContainer InnerContainer { get; }
+        protected IPlaylistContainer InnerContainer { get; }
+
+        /// <summary>
+        /// Gets the underlying playlist container model.
+        /// </summary>
+        public override IPlaylistItem Model => InnerContainer;
 
         // the list of view-model items corresponding to the model ones
         private IList<IPlaylistItemViewModel> Items = new List<IPlaylistItemViewModel>();

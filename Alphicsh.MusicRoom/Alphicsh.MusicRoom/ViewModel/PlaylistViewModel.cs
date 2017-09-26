@@ -15,19 +15,23 @@ namespace Alphicsh.MusicRoom.ViewModel
         /// </summary>
         /// <param name="playlist">The playlist model to wrap.</param>
         public PlaylistViewModel(Playlist playlist)
-        {
-            InnerPlaylist = playlist;
-        }
-
-        // the underlying playlist, of course
-        private Playlist InnerPlaylist { get; }
-
-        // this is the underlying playlist, too
-        protected override IPlaylistContainer InnerContainer => InnerPlaylist;
+            : base(playlist) { }
 
         /// <summary>
-        /// Gets the underlying playlist model.
+        /// Loads a playlist view model from a given file.
         /// </summary>
-        public override IPlaylistItem Model => InnerPlaylist;
+        /// <param name="path">The path to load the playlist from.</param>
+        public PlaylistViewModel(string path)
+            : base(Playlist.Load(path)) { }
+
+        // the underlying playlist, of course
+        private Playlist InnerPlaylist => InnerContainer as Playlist;
+
+        /// <summary>
+        /// Saves the playlist at the given location.
+        /// </summary>
+        /// <param name="path">The path to save the playlist at.</param>
+        public void Save(string path)
+            => InnerPlaylist.Save(path);
     }
 }

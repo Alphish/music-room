@@ -46,7 +46,7 @@ namespace Alphicsh.MusicRoom
             Context.Dispose();
         }
 
-        #region Playlist controls
+        #region Files menu
 
         // adding new tracks
         private void AddTracksButton_Click(object sender, RoutedEventArgs e)
@@ -70,6 +70,45 @@ namespace Alphicsh.MusicRoom
                     Context.Playlist.Add(new TrackViewModel(filename));
             }
         }
+
+        // loading a previously saved playlist
+        private void LoadPlaylistButton_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new CommonOpenFileDialog()
+            {
+                Title = "Load playlist",
+            };
+            dialog.Filters.Add(new CommonFileDialogFilter("Music Room Playlist", "*.mrpl"));
+
+            var result = dialog.ShowDialog();
+            if (result == CommonFileDialogResult.Ok)
+                Context.Playlist = new PlaylistViewModel(dialog.FileName);
+        }
+
+        // saving the current playlist
+        private void SavePlaylistButton_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new CommonSaveFileDialog()
+            {
+                Title = "Save playlist",
+            };
+            dialog.Filters.Add(new CommonFileDialogFilter("Music Room Playlist", "*.mrpl"));
+
+            var result = dialog.ShowDialog();
+            if (result == CommonFileDialogResult.Ok)
+                Context.Playlist.Save(dialog.FileName);
+        }
+
+        #endregion
+
+        #region Playlist area
+
+        // updating the selected items list in the view model
+        // apparently, ListBox SelectedItems can't be easily bound to
+        // so I'll just operate on these manually
+        // what could possibly go wrong...
+        private void PlaylistBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+            => Context.SelectedItems = (sender as ListBox).SelectedItems.Cast<IPlaylistItemViewModel>().ToList();
 
         // editing the currently selected track
         private void PlaylistItem_EditMenu_Click(object sender, RoutedEventArgs e)
@@ -107,12 +146,5 @@ namespace Alphicsh.MusicRoom
             => Context.Player.Stop();
 
         #endregion
-
-        // updating the selected items list in the view model
-        // apparently, ListBox SelectedItems can't be easily bound to
-        // so I'll just operate on these manually
-        // what could possibly go wrong...
-        private void PlaylistBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-            => Context.SelectedItems = (sender as ListBox).SelectedItems.Cast<IPlaylistItemViewModel>().ToList();
     }
 }

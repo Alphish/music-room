@@ -82,6 +82,7 @@
     <Compile Include="Model\BasePlaylistContainer.cs" />
     <Compile Include="Model\IPlaylistItem_Extensions.cs" />
     <Compile Include="Model\IStreamProvider_Extensions.cs" />
+    <Compile Include="Model\Playlist_IO.cs" />
     <Compile Include="ViewModel\BasePlaylistItemViewModel.cs" />
     <Compile Include="ViewModel\IPlaylistContainerViewModel.cs" />
     <Compile Include="ViewModel\IPlaylistItemViewModel.cs" />

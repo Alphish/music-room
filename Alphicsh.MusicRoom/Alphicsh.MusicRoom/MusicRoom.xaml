@@ -16,7 +16,10 @@
         <!-- The playlist controls -->
         <Menu>
             <MenuItem Header="_File">
-                <MenuItem Header="Add _Tracks" Click="AddTracksButton_Click"/>
+                <MenuItem Header="Add _tracks" Click="AddTracksButton_Click"/>
+                <Separator/>
+                <MenuItem Header="_Load playlist" Click="LoadPlaylistButton_Click"/>
+                <MenuItem Header="_Save playlist" Click="SavePlaylistButton_Click"/>
             </MenuItem>
         </Menu>
 
