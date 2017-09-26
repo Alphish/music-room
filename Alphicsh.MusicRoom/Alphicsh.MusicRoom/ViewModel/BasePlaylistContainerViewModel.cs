@@ -121,10 +121,6 @@ namespace Alphicsh.MusicRoom.ViewModel
         private void CollectionRemoved(int index, IPlaylistItemViewModel item)
             => CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, item, index));
 
-        // notifies about items being removed from the container
-        private void CollectionRemoved(int index, IEnumerable<IPlaylistItemViewModel> items)
-            => CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, items.ToList(), index));
-
         /// <summary>
         /// Removes the playlist item at the specified index.
         /// </summary>
@@ -180,9 +176,10 @@ namespace Alphicsh.MusicRoom.ViewModel
                     set.Remove(item);
                     Items.RemoveAt(i);
                     InnerContainer.RemoveAt(i);
-                }
 
-                if (!set.Any()) break;
+                    if (!set.Any())
+                        break;
+                }
             }
 
             // notification squad strikes again
@@ -237,6 +234,68 @@ namespace Alphicsh.MusicRoom.ViewModel
 
         // used for indexer change notifications
         private const string IndexerName = "Item[]";
+
+        #endregion
+
+        #region Moving
+
+        // the indexing rules for Move and Remove operations elude me
+        // the situation is so drastic, that Reset measures need to be taken
+
+        /// <summary>
+        /// Moves the specified items within the container.
+        /// </summary>
+        /// <param name="index">The index to move the items to, in relation to the collection before change.</param>
+        /// <param name="items">The items to move.</param>
+        public void Move(int index, IEnumerable<IPlaylistItemViewModel> items)
+        {
+            if (!items.Any())
+                return;
+
+            // setting up useful variables
+            var set = new HashSet<IPlaylistItemViewModel>(items);
+            IPlaylistItemViewModel item;
+
+            // actually moving the items
+            for (var i = 0; i < Items.Count; i++)
+            {
+                item = this[i];
+
+                if (!set.Contains(item))
+                    continue;
+                set.Remove(item);
+
+                // moving an item from position A to position A isn't necessary
+                if (i == index)
+                {
+                    if (!set.Any())
+                        break;
+                    else
+                        continue;
+                }
+
+                // moving the item and adjusting the future index
+                Items.RemoveAt(i);
+                InnerContainer.RemoveAt(i);
+                if (i < index)
+                {
+                    i--;
+                    index--;
+                }
+                Items.Insert(index, item);
+                InnerContainer.Insert(index, item.Model);
+                index++;
+
+                // ending early if all items are handled
+                if (!set.Any())
+                    break;
+            }
+
+            // more notifications
+            Notify(IndexerName);
+            CollectionReset();
+        }
+
 
         #endregion
 

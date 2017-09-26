@@ -31,7 +31,7 @@ namespace Alphicsh.MusicRoom.ViewModel
 
         // UI property, determines if and which track property is uneditable
         public RangeLock TrackLock
-            { get => _TrackLock; set => Set(nameof(_TrackLock), value); }
+            { get => _TrackLock; set => Set(nameof(TrackLock), value); }
         private RangeLock _TrackLock = RangeLock.None;
 
         /// <summary>

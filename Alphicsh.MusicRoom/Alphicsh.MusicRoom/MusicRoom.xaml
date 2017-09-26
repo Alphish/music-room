@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Alphicsh.MusicRoom"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="350" Width="525"
+        MouseUp="MusicRoom_MouseUp">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -24,11 +25,12 @@
         </Menu>
 
         <!-- The playlist selection -->
-        <ListBox
+        <ListBox Name="PlaylistBox"
             Grid.Row="1" Margin="4"
             ItemsSource="{Binding Playlist}"
             SelectionChanged="PlaylistBox_SelectionChanged"
             SelectionMode="Extended"
+            AllowDrop="True" Drop="PlaylistBox_Drop"
             >
             <ListBox.Resources>
                 <ContextMenu x:Key="ItemMenu">
@@ -38,13 +40,15 @@
             </ListBox.Resources>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Label Content="{Binding Name}"/>
+                    <Label Content="{Binding Name}" IsHitTestVisible="False"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
             <ListBox.ItemContainerStyle>
                 <Style TargetType="ListBoxItem">
                     <Setter Property="ContextMenu" Value="{StaticResource ItemMenu}"/>
                     <EventSetter Event="MouseDoubleClick" Handler="PlayButton_Click"/>
+                    <EventSetter Event="PreviewMouseDown" Handler="PlaylistItem_PreviewMouseDown"/>
+                    <EventSetter Event="PreviewMouseMove" Handler="PlaylistItem_PreviewMouseMove"/>
                 </Style>
             </ListBox.ItemContainerStyle>
         </ListBox>
