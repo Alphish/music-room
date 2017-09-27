@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Alphicsh.MusicRoom.View"
         mc:Ignorable="d"
-        Title="TrackEditWindow" Height="360" Width="480">
+        Title="Edit Track" Height="360" Width="480">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
