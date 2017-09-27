@@ -16,16 +16,15 @@ namespace Alphicsh.MusicRoom.DataContext
     /// </summary>
     public class MusicRoomDataContext : NotifyPropertyChanged, IDisposable
     {
-        public MusicRoomDataContext()
+        public MusicRoomDataContext(Playlist playlist)
         {
-            Player = new PlayerViewModel();
-            _Playlist = new PlaylistViewModel(new Playlist() );
+            _Playlist = new PlaylistViewModel(playlist);
         }
 
         /// <summary>
         /// Gets the music player instance.
         /// </summary>
-        public PlayerViewModel Player { get; }
+        public PlayerViewModel Player { get; } = new PlayerViewModel();
 
         /// <summary>
         /// Gets or sets the list of selected items.

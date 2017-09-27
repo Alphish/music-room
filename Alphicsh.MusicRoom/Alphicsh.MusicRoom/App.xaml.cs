@@ -9,6 +9,8 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 
+using Alphicsh.MusicRoom.Model;
+
 namespace Alphicsh.MusicRoom
 {
     /// <summary>
@@ -37,6 +39,28 @@ namespace Alphicsh.MusicRoom
                         textBox.Text = "";
                 }
             }
+        }
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            Playlist playlist;
+
+            if (!e.Args.Any())
+                playlist = new Playlist();
+            else
+            {
+                try
+                {
+                    playlist = Playlist.Load(e.Args[0]);
+                }
+                catch
+                {
+                    playlist = new Playlist();
+                }
+            }
+
+            var window = new MusicRoom(playlist);
+            window.Show();
         }
     }
 }

@@ -32,13 +32,14 @@ namespace Alphicsh.MusicRoom
     /// </summary>
     public partial class MusicRoom : Window
     {
-        private MusicRoomDataContext Context { get; } = new MusicRoomDataContext();
-
-        public MusicRoom()
+        public MusicRoom(Playlist playlist)
         {
+            var Context = new MusicRoomDataContext(playlist);
             DataContext = Context;
             InitializeComponent();
         }
+
+        private MusicRoomDataContext Context => DataContext as MusicRoomDataContext;
 
         // disposing of the application resources
         // among other things, it includes closing the player if it plays
