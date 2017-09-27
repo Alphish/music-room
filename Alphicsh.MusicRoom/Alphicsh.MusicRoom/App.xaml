@@ -2,8 +2,13 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Alphicsh.MusicRoom"
+             xmlns:converters="clr-namespace:Alphicsh.MusicRoom.Converters"
              StartupUri="MusicRoom.xaml">
     <Application.Resources>
-         
+        <converters:SwitchConverter x:Key="SwitchConverter"/>
+        <converters:NumericWithDefaultConverter x:Key="NumericConverter"/>
+        <Style TargetType="{x:Type TextBox}">
+            <EventSetter Event="KeyDown" Handler="TextBox_KeyDown"/>
+        </Style>
     </Application.Resources>
 </Application>

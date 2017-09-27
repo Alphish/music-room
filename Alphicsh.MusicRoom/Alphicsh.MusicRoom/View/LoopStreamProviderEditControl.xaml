@@ -4,16 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Alphicsh.MusicRoom.View"
-             xmlns:converters="clr-namespace:Alphicsh.MusicRoom.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="400">
     
     <!-- CONTROL RESOURCES -->
     <UserControl.Resources>
-        <converters:SwitchConverter x:Key="SwitchConverter"/>
-        <converters:NumericWithDefaultConverter x:Key="NumericConverter"/>
-        <Style TargetType="{x:Type TextBox}">
-            <EventSetter Event="KeyDown" Handler="StreamParameter_KeyDown"/>
+        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
             <EventSetter Event="GotFocus" Handler="StreamParameter_GotFocus"/>
         </Style>
     </UserControl.Resources>

@@ -43,21 +43,6 @@ namespace Alphicsh.MusicRoom.View
             if (binding.ConverterParameter.Equals(textBox.Text)) textBox.Text = "";
         }
 
-        // registers the parameter value change while keeping text box focused on
-        private void StreamParameter_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                var textBox = sender as TextBox;
-
-                var expression = BindingOperations.GetBindingExpression(textBox, TextBox.TextProperty);
-                expression.UpdateSource();
-
-                var binding = BindingOperations.GetBinding(textBox, TextBox.TextProperty);
-                if (binding.ConverterParameter.Equals(textBox.Text)) textBox.Text = "";
-            }
-        }
-
         #endregion
 
         #region Loop section events
