@@ -96,6 +96,9 @@
     <Compile Include="View\LoopStreamProviderEditControl.xaml.cs">
       <DependentUpon>LoopStreamProviderEditControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\PlaylistEditWindow.xaml.cs">
+      <DependentUpon>PlaylistEditWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\PlaylistItemInfoEditControl.xaml.cs">
       <DependentUpon>PlaylistItemInfoEditControl.xaml</DependentUpon>
     </Compile>
@@ -115,6 +118,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\LoopStreamProviderEditControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PlaylistEditWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

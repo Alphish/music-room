@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Alphicsh.MusicRoom.Model
 {
+    using FilePath = System.IO.Path;
+
     /// <summary>
     /// Represents a Music Room playlist.
     /// </summary>
@@ -17,7 +20,24 @@ namespace Alphicsh.MusicRoom.Model
 
             // by default, the playlist saving location is assumed to be in the same directory as Music Room executable
             var exePath = new Uri(System.Reflection.Assembly.GetExecutingAssembly().GetName().CodeBase).LocalPath;
-            Path = System.IO.Path.GetDirectoryName(exePath) + System.IO.Path.DirectorySeparatorChar + "playlist.mrpl";
+            Path = FilePath.GetDirectoryName(exePath) + FilePath.DirectorySeparatorChar + "playlist.mrpl";
+        }
+
+        /// <summary>
+        /// Gets or sets the path to the playlist item, relative or absolute.
+        /// </summary>
+        public override string Path
+        {
+            get => base.Path;
+            set
+            {
+                var previous = base.Path;
+                base.Path = value;
+
+                // reverting if the new path is invalid
+                if (!Directory.Exists(FilePath.GetDirectoryName(this.GetFullPath())))
+                    base.Path = previous;
+            }
         }
 
         /// <summary>

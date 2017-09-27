@@ -21,6 +21,7 @@ namespace Alphicsh.MusicRoom.Model
         internal static void Save(Playlist playlist, string path)
         {
             playlist.ToSton().SaveCanonicalForm(path);
+            playlist.Path = path;
         }
 
         // builds a STON entity from a playlist item
@@ -140,10 +141,10 @@ namespace Alphicsh.MusicRoom.Model
             var document = RegularStonReader.Default.LoadDocument(path);
             var builtObjects = new Dictionary<IStonValuedEntity, object>();
 
-            var result = FromSton<IPlaylistItem>(document, document.Core, builtObjects) as Playlist;
-            result.Path = path;
+            var playlist = FromSton<IPlaylistItem>(document, document.Core, builtObjects) as Playlist;
+            playlist.Path = path;
 
-            return result;
+            return playlist;
         }
 
         // reads a usable object from a STON value

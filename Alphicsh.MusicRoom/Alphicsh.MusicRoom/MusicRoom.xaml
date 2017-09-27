@@ -19,8 +19,10 @@
             <MenuItem Header="_File">
                 <MenuItem Header="Add _tracks" Click="AddTracksButton_Click"/>
                 <Separator/>
+                <MenuItem Header="New playlist" Click="NewPlaylistButton_Click"/>
                 <MenuItem Header="_Load playlist" Click="LoadPlaylistButton_Click"/>
                 <MenuItem Header="_Save playlist" Click="SavePlaylistButton_Click"/>
+                <MenuItem Header="_Manage playlist" Click="ManagePlaylistButton_Click"/>
             </MenuItem>
         </Menu>
 
@@ -40,7 +42,7 @@
             </ListBox.Resources>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Label Content="{Binding Name}" IsHitTestVisible="False"/>
+                    <TextBlock Text="{Binding Name}" IsHitTestVisible="False"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
             <ListBox.ItemContainerStyle>

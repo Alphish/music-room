@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,6 +25,8 @@ using Alphicsh.MusicRoom.ViewModel;
 
 namespace Alphicsh.MusicRoom
 {
+    using Path = System.IO.Path;
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -71,6 +74,10 @@ namespace Alphicsh.MusicRoom
             }
         }
 
+        // starting a new playlist
+        private void NewPlaylistButton_Click(object sender, RoutedEventArgs e)
+            => Context.Playlist = new PlaylistViewModel(new Playlist());
+
         // loading a previously saved playlist
         private void LoadPlaylistButton_Click(object sender, RoutedEventArgs e)
         {
@@ -91,12 +98,21 @@ namespace Alphicsh.MusicRoom
             var dialog = new CommonSaveFileDialog()
             {
                 Title = "Save playlist",
+                InitialDirectory = Path.GetDirectoryName(Context.Playlist.Path),
+                DefaultFileName = Path.GetFileName(Context.Playlist.Path),
             };
             dialog.Filters.Add(new CommonFileDialogFilter("Music Room Playlist", "*.mrpl"));
 
             var result = dialog.ShowDialog();
             if (result == CommonFileDialogResult.Ok)
                 Context.Playlist.Save(dialog.FileName);
+        }
+
+        // managing the current playlist
+        private void ManagePlaylistButton_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new PlaylistEditWindow(Context.Playlist);
+            window.ShowDialog();
         }
 
         #endregion
@@ -263,7 +279,16 @@ namespace Alphicsh.MusicRoom
             if (item != null)
             {
                 var track = (item as TrackViewModel).Model as Track;
-                Context.Player.Play(track.StreamProvider, track.StreamProvider.CreateStream, true);
+                try
+                {
+                    Context.Player.Play(track.StreamProvider, track.StreamProvider.CreateStream, true);
+                }
+                catch (FileNotFoundException ex)
+                {
+                    DragPoint = null;
+                    Preselection = null;
+                    MessageBox.Show($"Could not find track at the following path:\n{ex.FileName}\n\nRight-click on the track and edit it to change its location.");
+                }
             }
         }
 

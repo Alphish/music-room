@@ -19,7 +19,7 @@ namespace Alphicsh.MusicRoom.Model
         /// <summary>
         /// Gets or sets the path to the playlist item, relative or absolute.
         /// </summary>
-        public string Path
+        public virtual string Path
         {
             get => _Path;
             set => _Path = value ?? throw new ArgumentNullException("Playlist item path cannot be null.");
