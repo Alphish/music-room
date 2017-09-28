@@ -168,7 +168,7 @@ namespace Alphicsh.MusicRoom.View
             if (result == MessageBoxResult.Yes)
             {
                 foreach (var item in Playlist)
-                    item.Path = Path.GetFullPath(Path.Combine(Playlist.Path, item.Path));
+                    item.Path = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Playlist.Path), item.Path));
             }
         }
     }

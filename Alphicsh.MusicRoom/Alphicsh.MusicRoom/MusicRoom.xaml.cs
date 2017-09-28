@@ -284,11 +284,11 @@ namespace Alphicsh.MusicRoom
                 {
                     Context.Player.Play(track.StreamProvider, track.StreamProvider.CreateStream, true);
                 }
-                catch (FileNotFoundException ex)
+                catch (IOException ex) when (ex is FileNotFoundException || ex is DirectoryNotFoundException)
                 {
                     DragPoint = null;
                     Preselection = null;
-                    MessageBox.Show($"Could not find track at the following path:\n{ex.FileName}\n\nRight-click on the track and edit it to change its location.");
+                    MessageBox.Show($"Could not find track at the following path:\n{item.FullPath}\n\nRight-click on the track and edit it to change its location.");
                 }
             }
         }
