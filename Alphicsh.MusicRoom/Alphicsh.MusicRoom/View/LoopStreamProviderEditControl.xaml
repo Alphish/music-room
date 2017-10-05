@@ -26,7 +26,7 @@
         </Grid.RowDefinitions>
 
         <!-- TRACK SECTION -->
-        <GroupBox Header="Track" Grid.Row="0" Grid.Column="0" Margin="4">
+        <GroupBox Header="Track" Grid.Row="0" Grid.Column="0">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -44,31 +44,31 @@
 
                 <!-- Track Start -->
                 <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" Margin="2">Start:</Label>
-                <TextBox Grid.Row="0" Grid.Column="1" Margin="4"
+                <TextBox Grid.Row="0" Grid.Column="1"
                          Text="{Binding TrackStart, Mode=TwoWay, Converter={StaticResource NumericConverter}, ConverterParameter='default'}"
                          IsEnabled="{Binding Path=TrackLock, Mode=OneWay, Converter={StaticResource SwitchConverter}, ConverterParameter='Start: False; :True'}"
                          />
-                <Button Grid.Row="0" Grid.Column="2" Margin="4" Click="LockTrackStartButton_Click"
+                <Button Grid.Row="0" Grid.Column="2" Click="LockTrackStartButton_Click"
                         Content="{Binding Path=TrackLock, Mode=OneWay, Converter={StaticResource SwitchConverter}, ConverterParameter='Start: 🔒; :🔓'}"
                         />
 
                 <!-- Track Length -->
                 <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Margin="2">Length:</Label>
-                <TextBox Grid.Row="1" Grid.Column="1" Margin="4"
+                <TextBox Grid.Row="1" Grid.Column="1"
                          Text="{Binding TrackLength, Mode=TwoWay, Converter={StaticResource NumericConverter}, ConverterParameter='unknown'}"
                          IsEnabled="{Binding Path=TrackLock, Mode=OneWay, Converter={StaticResource SwitchConverter}, ConverterParameter='Length: False; :True'}"
                          />
-                <Button Grid.Row="1" Grid.Column="2" Margin="4" Click="LockTrackLengthButton_Click"
+                <Button Grid.Row="1" Grid.Column="2" Click="LockTrackLengthButton_Click"
                         Content="{Binding Path=TrackLock, Mode=OneWay, Converter={StaticResource SwitchConverter}, ConverterParameter='Length: 🔒; :🔓'}"
                         />
 
                 <!-- Track End -->
                 <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Margin="2">End:</Label>
-                <TextBox Grid.Row="2" Grid.Column="1" Margin="4"
+                <TextBox Grid.Row="2" Grid.Column="1"
                          Text="{Binding TrackEnd, Mode=TwoWay, Converter={StaticResource NumericConverter}, ConverterParameter='default'}"
                          IsEnabled="{Binding Path=TrackLock, Mode=OneWay, Converter={StaticResource SwitchConverter}, ConverterParameter='End: False; :True'}"
                          />
-                <Button Grid.Row="2" Grid.Column="2" Margin="4" Click="LockTrackEndButton_Click"
+                <Button Grid.Row="2" Grid.Column="2" Click="LockTrackEndButton_Click"
                         Content="{Binding Path=TrackLock, Mode=OneWay, Converter={StaticResource SwitchConverter}, ConverterParameter='End: 🔒; :🔓'}"
                         />
 
@@ -77,7 +77,7 @@
         </GroupBox>
 
         <!-- LOOP SECTION -->
-        <GroupBox Header="Loop" Grid.Row="0" Grid.Column="1" Margin="4">
+        <GroupBox Header="Loop" Grid.Row="0" Grid.Column="1">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -95,48 +95,48 @@
 
                 <!-- Loop Start -->
                 <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" Margin="2">Start:</Label>
-                <TextBox Grid.Row="0" Grid.Column="1" Margin="4"
+                <TextBox Grid.Row="0" Grid.Column="1"
                          Text="{Binding StreamLoopStart, Mode=TwoWay, Converter={StaticResource NumericConverter}, ConverterParameter='default'}"
                          IsEnabled="{Binding Path=LoopLock, Mode=OneWay, Converter={StaticResource SwitchConverter}, ConverterParameter='Start: False; :True'}"
                          />
-                <Button Grid.Row="0" Grid.Column="2" Margin="4" Click="LockLoopStartButton_Click"
+                <Button Grid.Row="0" Grid.Column="2" Click="LockLoopStartButton_Click"
                         Content="{Binding Path=LoopLock, Mode=OneWay, Converter={StaticResource SwitchConverter}, ConverterParameter='Start: 🔒; :🔓'}"
                         />
 
                 <!-- Loop Length -->
                 <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Margin="2">Length:</Label>
-                <TextBox Grid.Row="1" Grid.Column="1" Margin="4"
+                <TextBox Grid.Row="1" Grid.Column="1"
                          Text="{Binding LoopLength, Mode=TwoWay, Converter={StaticResource NumericConverter}, ConverterParameter='unknown'}"
                          IsEnabled="{Binding Path=LoopLock, Mode=OneWay, Converter={StaticResource SwitchConverter}, ConverterParameter='Length: False; :True'}"
                          />
-                <Button Grid.Row="1" Grid.Column="2" Margin="4" Click="LockLoopLengthButton_Click"
+                <Button Grid.Row="1" Grid.Column="2" Click="LockLoopLengthButton_Click"
                         Content="{Binding Path=LoopLock, Mode=OneWay, Converter={StaticResource SwitchConverter}, ConverterParameter='Length: 🔒; :🔓'}"
                         />
 
                 <!-- Loop End -->
                 <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Margin="2">End:</Label>
-                <TextBox Grid.Row="2" Grid.Column="1" Margin="4"
+                <TextBox Grid.Row="2" Grid.Column="1"
                          Text="{Binding StreamLoopEnd, Mode=TwoWay, Converter={StaticResource NumericConverter}, ConverterParameter='default'}"
                          IsEnabled="{Binding Path=LoopLock, Mode=OneWay, Converter={StaticResource SwitchConverter}, ConverterParameter='End: False; :True'}"
                          />
-                <Button Grid.Row="2" Grid.Column="2" Margin="4" Click="LockLoopEndButton_Click"
+                <Button Grid.Row="2" Grid.Column="2" Click="LockLoopEndButton_Click"
                         Content="{Binding Path=LoopLock, Mode=OneWay, Converter={StaticResource SwitchConverter}, ConverterParameter='End: 🔒; :🔓'}"
                         />
 
                 <TextBlock Grid.Row="3" Grid.ColumnSpan="3" Margin="4" TextWrapping="WrapWithOverflow">Loop range is provided in samples.</TextBlock>
 
-                <Separator Grid.Row="4" Grid.ColumnSpan="3" Margin="4"/>
+                <Separator Grid.Row="4" Grid.ColumnSpan="3"/>
 
                 <!-- Loop Count -->
                 <Label Grid.Row="5" Grid.Column="0" HorizontalAlignment="Right" Margin="2">Loops:</Label>
-                <TextBox Grid.Row="5" Grid.Column="1" Margin="4"
+                <TextBox Grid.Row="5" Grid.Column="1"
                          Text="{Binding Loops, Mode=TwoWay, Converter={StaticResource NumericConverter}, ConverterParameter='unlimited'}"
                          />
             </Grid>
         </GroupBox>
 
         <!-- VALIDITY -->
-        <GroupBox Header="Summary" Grid.Row="1" Grid.ColumnSpan="2" Margin="4">
+        <GroupBox Header="Summary" Grid.Row="1" Grid.ColumnSpan="2">
             <Label HorizontalAlignment="Center" VerticalAlignment="Center"
                 Content="{Binding Path=IsValid, Mode=OneWay, Converter={StaticResource SwitchConverter}, ConverterParameter='True: The loop is valid.; False: The loop is invalid.'}"
                 />

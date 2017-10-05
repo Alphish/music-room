@@ -28,7 +28,7 @@
 
         <!-- The playlist selection -->
         <ListBox Name="PlaylistBox"
-            Grid.Row="1" Margin="4"
+            Grid.Row="1"
             ItemsSource="{Binding Playlist}"
             SelectionChanged="PlaylistBox_SelectionChanged"
             SelectionMode="Extended"
