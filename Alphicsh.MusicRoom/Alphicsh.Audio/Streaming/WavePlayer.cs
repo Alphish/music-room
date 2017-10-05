@@ -123,17 +123,47 @@ namespace Alphicsh.Audio.Streaming
         }
 
         /// <summary>
-        /// Gets the current position in bytes from the wave output device.
+        /// Gets the current position in bytes in the played stream.
         /// </summary>
         /// <returns>The position in bytes.</returns>
-        public long GetPosition()
-            => CurrentOut.GetPosition();
+        public long Position
+        {
+            get => CurrentStream?.Position ?? 0;
+            set
+            {
+                var state = PlaybackState;
+                if (state != PlaybackState.Stopped)
+                {
+                    // doing a bit of juggling here...
+                    // first, the track is stopped to clear the remaining sound from buffers
+                    CurrentOut.Stop();
+                    
+                    // then, the stream is repositioned as requested
+                    CurrentStream.Position = value;
+
+                    // then, the track is replayed/resumed from the new position
+                    // the volume is temporarily changed to avoid brief glitching
+                    // otherwise audible when track is repositioned in its paused state
+                    var volume = CurrentOut.Volume;
+                    CurrentOut.Volume = 0;
+                    CurrentOut.Play();
+                    CurrentOut.Volume = volume;
+
+                    // finally, if the track has been originally paused
+                    // brings it back to the paused state
+                    if (state == PlaybackState.Paused)
+                        CurrentOut.Pause();
+
+                    // kinda elaborate, but works
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the current playback state.
         /// </summary>
         public PlaybackState PlaybackState
-            => CurrentOut.PlaybackState;
+            => CurrentOut?.PlaybackState ?? PlaybackState.Stopped;
 
         /// <summary>
         /// Gets or sets the playback volume. It should be a value between 0.0 and 1.0.
