@@ -23,12 +23,15 @@ namespace Alphicsh.MusicRoom.ViewModel
         /// Gets the track to play.
         /// </summary>
         public TrackViewModel SelectedTrack
-            { get => _SelectedTrack; set => Set(nameof(SelectedTrack), value); }
+            { get => _SelectedTrack; private set => Set(nameof(SelectedTrack), value); }
         private TrackViewModel _SelectedTrack = null;
 
+        /// <summary>
+        /// Gets the currently playing stream provider.
+        /// </summary>
         public LoopStreamProviderViewModel SelectedStreamProvider
-            { get => _SelectedStreamProvider; set => Set(nameof(SelectedStreamProvider), value); }
-        private LoopStreamProviderViewModel _SelectedStreamProvider;
+            { get => _SelectedStreamProvider; private set => Set(nameof(SelectedStreamProvider), value); }
+        private LoopStreamProviderViewModel _SelectedStreamProvider = null;
 
         #region Basic playback actions
 
@@ -54,8 +57,19 @@ namespace Alphicsh.MusicRoom.ViewModel
         /// <param name="track">The track to play.</param>
         public void Play(TrackViewModel track)
         {
+            TrackViewModel lastSelectedTrack = SelectedTrack;
             SelectedTrack = track;
-            Play();
+            try
+            {
+                Play();
+            }
+            catch
+            {
+                // the track to play is invalid
+                // please don't use this track
+                SelectedTrack = lastSelectedTrack;
+                throw;
+            }
         }
 
         /// <summary>

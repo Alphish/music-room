@@ -292,16 +292,21 @@ namespace Alphicsh.MusicRoom
             var item = Context.SelectedItems.OfType<TrackViewModel>().FirstOrDefault();
             if (item != null)
             {
-                Context.Player.SelectedTrack = item;
                 try
                 {
-                    Context.Player.Play();
+                    Context.Player.Play(item);
                 }
                 catch (IOException ex) when (ex is FileNotFoundException || ex is DirectoryNotFoundException)
                 {
                     DragPoint = null;
                     Preselection = null;
                     MessageBox.Show($"Could not find the track at the following path:\n{item.FullPath}\n\nRight-click on the track and edit it to change its location.");
+                }
+                catch (Exception ex) when (ex is InvalidOperationException || ex is ArgumentException || ex is NotSupportedException)
+                {
+                    DragPoint = null;
+                    Preselection = null;
+                    MessageBox.Show($"An error occurred when trying to play the track:\n{ex.Message}\n\nRight-click on the track and edit it to correct its parameters.");
                 }
             }
         }

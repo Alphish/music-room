@@ -48,6 +48,10 @@ namespace Alphicsh.MusicRoom.View
                 {
                     MessageBox.Show($"Could not find the track at the following path:\n{Player.SelectedTrack.FullPath}\n\nRight-click on the track and edit it to change its location.");
                 }
+                catch (Exception ex) when (ex is InvalidOperationException || ex is ArgumentException || ex is NotSupportedException)
+                {
+                    MessageBox.Show($"An error occurred when trying to play the track:\n{ex.Message}\n\nRight-click on the track and edit it to correct its parameters.");
+                }
             }
         }
 
