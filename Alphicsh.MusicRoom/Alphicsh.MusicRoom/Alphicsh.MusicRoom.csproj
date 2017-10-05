@@ -100,6 +100,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\GridLengthConverter.cs" />
     <Compile Include="Converters\NumericWithDefaultConverter.cs" />
     <Compile Include="Converters\SwitchConverter.cs" />
     <Compile Include="DataContext\TrackEditWindowDataContext.cs" />
@@ -120,12 +121,16 @@
     <Compile Include="View\LoopStreamProviderEditControl.xaml.cs">
       <DependentUpon>LoopStreamProviderEditControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\PlayerControl.xaml.cs">
+      <DependentUpon>PlayerControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\PlaylistEditWindow.xaml.cs">
       <DependentUpon>PlaylistEditWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\PlaylistItemInfoEditControl.xaml.cs">
       <DependentUpon>PlaylistItemInfoEditControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\FrameEventProvider.cs" />
     <Compile Include="View\TrackEditWindow.xaml.cs">
       <DependentUpon>TrackEditWindow.xaml</DependentUpon>
     </Compile>
@@ -142,6 +147,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\LoopStreamProviderEditControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PlayerControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

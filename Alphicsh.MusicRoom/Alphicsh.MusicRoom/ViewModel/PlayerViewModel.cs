@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using NAudio.Wave;
 
 using Alphicsh.Audio.Streaming;
+using Alphicsh.MusicRoom.Model;
 
 namespace Alphicsh.MusicRoom.ViewModel
 {
@@ -18,37 +19,118 @@ namespace Alphicsh.MusicRoom.ViewModel
         // the inner music player
         private WavePlayer InnerPlayer = new WavePlayer();
 
-        #region Basic playback management
+        /// <summary>
+        /// Gets the track to play.
+        /// </summary>
+        public TrackViewModel SelectedTrack
+            { get => _SelectedTrack; set => Set(nameof(SelectedTrack), value); }
+        private TrackViewModel _SelectedTrack = null;
+
+        public LoopStreamProviderViewModel SelectedStreamProvider
+            { get => _SelectedStreamProvider; set => Set(nameof(SelectedStreamProvider), value); }
+        private LoopStreamProviderViewModel _SelectedStreamProvider;
+
+        #region Basic playback actions
 
         /// <summary>
         /// Plays the currently selected track.
         /// </summary>
-        /// <param name="reset">Whether the track should be reset to initial position or not.</param>
-        public void Play(bool reset = false)
-            => InnerPlayer.Play(reset);
+        public void Play()
+        {
+            if (SelectedTrack == null) return;
+
+            var track = SelectedTrack.Model as Track;
+            SelectedStreamProvider = SelectedTrack.StreamProvider;
+            InnerPlayer.Play(SelectedStreamProvider.Model, SelectedStreamProvider.Model.CreateStream, true);
+            SelectedStreamProvider.ExpectedStreamLength = Length / InnerPlayer.CurrentStream.BlockAlign;
+            Notify(nameof(Length));
+            Notify(nameof(Position));
+            Notify(nameof(State));
+        }
 
         /// <summary>
-        /// Plays a given track. If the track is already playing, the player carries on.
+        /// Selects and plays a specific track.
         /// </summary>
-        /// <param name="stream">The track to play.</param>
-        /// <param name="reset">Whether the track should be reset to initial position or not.</param>
-        public void Play(WaveStream stream, bool reset = false)
-            => InnerPlayer.Play(stream, reset);
+        /// <param name="track">The track to play.</param>
+        public void Play(TrackViewModel track)
+        {
+            SelectedTrack = track;
+            Play();
+        }
 
         /// <summary>
-        /// Plays a track created from a source. If the track from the source is already used an playing, the player carries on.
+        /// Pauses the currently playing track.
         /// </summary>
-        /// <param name="streamSource">The object the stream is created from.</param>
-        /// <param name="streamBuilder">The function that creates the stream if needed.</param>
-        /// <param name="reset">Whether the track should be reset to initial position or not.</param>
-        public void Play(object source, Func<WaveStream> builder, bool reset = false)
-            => InnerPlayer.Play(source, builder, reset);
+        public void Pause()
+        {
+            InnerPlayer.Pause();
+            Notify(nameof(State));
+        }
+
+        /// <summary>
+        /// Resumes the currently paused track.
+        /// </summary>
+        public void Resume()
+        {
+            InnerPlayer.Resume();
+            Notify(nameof(State));
+        }
 
         /// <summary>
         /// Stops the track and resets the stream position.
         /// </summary>
         public void Stop()
-            => InnerPlayer.Stop();
+        {
+            InnerPlayer.Stop();
+            Notify(nameof(Position));
+            Notify(nameof(State));
+        }
+
+        #endregion
+
+        #region Other playback management
+
+        /// <summary>
+        /// Gets the playback state of the currently played track, if any.
+        /// </summary>
+        public PlaybackState State
+            => InnerPlayer.PlaybackState;
+
+        /// <summary>
+        /// Gets or sets the playback volume.
+        /// </summary>
+        public float Volume
+        {
+            get => InnerPlayer.Volume;
+            set => Set(InnerPlayer, nameof(Volume), Math.Min(Math.Max(0f, value), 1f));
+        }
+
+        /// <summary>
+        /// Gets or sets the position of the track (in bytes).
+        /// </summary>
+        public long Position
+        {
+            get => InnerPlayer.Position;
+            set => Set(InnerPlayer, nameof(Position), value);
+        }
+        private long _LastPosition = -1;
+
+        /// <summary>
+        /// Continuously checks the current position, and notifies if it has changed.
+        /// </summary>
+        public void UpdatePosition()
+        {
+            long position = Position;
+            if (position != _LastPosition)
+                Notify(nameof(Position));
+            _LastPosition = position;
+        }
+
+        /// <summary>
+        /// Gets the length of the track, if any.
+        /// </summary>
+        public long Length
+            => InnerPlayer.CurrentStream?.Length ?? 1;
 
         #endregion
 

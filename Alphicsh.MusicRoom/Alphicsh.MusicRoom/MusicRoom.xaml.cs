@@ -17,7 +17,6 @@ using System.Windows.Shapes;
 
 using Microsoft.WindowsAPICodePack.Dialogs;
 
-using Alphicsh.Audio.Streaming;
 using Alphicsh.MusicRoom.DataContext;
 using Alphicsh.MusicRoom.Model;
 using Alphicsh.MusicRoom.View;
@@ -274,15 +273,15 @@ namespace Alphicsh.MusicRoom
 
         // playing the currently selected track (one of these, anyway)
         // if the track is playing already, it's reset
-        private void PlayButton_Click(object sender, RoutedEventArgs e)
+        private void PlaylistItem_DoubleClick(object sender, RoutedEventArgs e)
         {
             var item = Context.SelectedItems.OfType<TrackViewModel>().FirstOrDefault();
             if (item != null)
             {
-                var track = (item as TrackViewModel).Model as Track;
+                Context.Player.SelectedTrack = item;
                 try
                 {
-                    Context.Player.Play(track.StreamProvider, track.StreamProvider.CreateStream, true);
+                    Context.Player.Play();
                 }
                 catch (IOException ex) when (ex is FileNotFoundException || ex is DirectoryNotFoundException)
                 {
@@ -292,10 +291,6 @@ namespace Alphicsh.MusicRoom
                 }
             }
         }
-
-        // stopping the currently played track
-        private void StopButton_Click(object sender, RoutedEventArgs e)
-            => Context.Player.Stop();
 
         #endregion
     }

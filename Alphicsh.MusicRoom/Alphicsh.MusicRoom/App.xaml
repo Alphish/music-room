@@ -7,6 +7,7 @@
         <!-- General purpose converters -->
         <converters:SwitchConverter x:Key="SwitchConverter"/>
         <converters:NumericWithDefaultConverter x:Key="NumericConverter"/>
+        <converters:GridLengthConverter x:Key="GridLengthConverter"/>
         
         <!-- Default styles -->
         <Style TargetType="{x:Type Button}">

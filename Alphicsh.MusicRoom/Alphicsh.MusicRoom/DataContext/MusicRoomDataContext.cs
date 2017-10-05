@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 using Alphicsh.MusicRoom.Model;
 using Alphicsh.MusicRoom.ViewModel;
+using Alphicsh.MusicRoom.View;
 
 namespace Alphicsh.MusicRoom.DataContext
 {
@@ -18,7 +19,13 @@ namespace Alphicsh.MusicRoom.DataContext
     {
         public MusicRoomDataContext(Playlist playlist)
         {
+            // sets up the initial playlist
+            // either a newly created one
+            // or the one that has been opened with Music Room application
             _Playlist = new PlaylistViewModel(playlist);
+
+            // schedules an update of music play position for every frame
+            FrameEventProvider.FrameUpdating += (sender, e) => Player.UpdatePosition();
         }
 
         /// <summary>

@@ -310,6 +310,79 @@ namespace Alphicsh.MusicRoom.ViewModel
 
         #endregion
 
+        #region Lengths
+
+        /// <summary>
+        /// Gets or sets the assumed length of the track stream.
+        /// Based on it, the track/loop positions can be fully determined.
+        /// </summary>
+        public long ExpectedStreamLength
+        {
+            get => _ExpectedStreamLength;
+            set
+            {
+                if (value <= 0)
+                    throw new ArgumentException("The expected stream length must have a positive value.");
+
+                if (_ExpectedStreamLength != value)
+                {
+                    _ExpectedStreamLength = value;
+                    Notify(nameof(ExpectedStreamLength));
+
+                    Notify(nameof(ExpectedTrackStart));
+                    Notify(nameof(ExpectedLoopStart));
+                    Notify(nameof(ExpectedLoopEnd));
+                    Notify(nameof(ExpectedTrackEnd));
+
+                    Notify(nameof(ExpectedIntroLength));
+                    Notify(nameof(ExpectedLoopLength));
+                    Notify(nameof(ExpectedOutroLength));
+                }
+            }
+        }
+        private long _ExpectedStreamLength = 1;
+
+        /// <summary>
+        /// Gets the expected track start position, based on expected stream length and given track start value.
+        /// </summary>
+        public long ExpectedTrackStart
+            => TrackStart < 0 ? 0 : TrackStart >= ExpectedStreamLength ? ExpectedStreamLength - 1 : TrackStart;
+
+        /// <summary>
+        /// Gets the expected loop start position, based on expected stream length and given loop start value.
+        /// </summary>
+        public long ExpectedLoopStart
+            => StreamLoopStart < ExpectedTrackStart ? ExpectedTrackStart : StreamLoopStart >= ExpectedStreamLength ? ExpectedStreamLength - 1 : StreamLoopStart;
+
+        /// <summary>
+        /// Gets the expected loop end position, based on expected stream length amd given loop end value.
+        /// </summary>
+        public long ExpectedLoopEnd
+            => StreamLoopEnd < 0 ? ExpectedTrackEnd : StreamLoopEnd > ExpectedTrackEnd ? ExpectedTrackEnd : StreamLoopEnd <= ExpectedLoopStart ? ExpectedLoopStart + 1 : StreamLoopEnd;
+
+        /// <summary>
+        /// Gets the expected track start position, based on expected stream length and given track end value.
+        /// </summary>
+        public long ExpectedTrackEnd
+            => TrackEnd < 0 ? ExpectedStreamLength : TrackEnd <= ExpectedLoopStart ? ExpectedLoopStart + 1 : TrackEnd > ExpectedStreamLength ? ExpectedStreamLength : TrackEnd;
+
+        /// <summary>
+        /// Gets the length of the track intro (the part before the loop).
+        /// </summary>
+        public long ExpectedIntroLength => ExpectedLoopStart - ExpectedTrackStart;
+
+        /// <summary>
+        /// Gets the length of the loop.
+        /// </summary>
+        public long ExpectedLoopLength => ExpectedLoopEnd - ExpectedLoopStart;
+
+        /// <summary>
+        /// Gets the length of the track outro (the part after the loop).
+        /// </summary>
+        public long ExpectedOutroLength => ExpectedTrackEnd - ExpectedLoopEnd;
+
+        #endregion
+
         /// <summary>
         /// Indicates whether all track and loop properties are in a correct relation. It does not take into account the length of the original stream.
         /// </summary>
