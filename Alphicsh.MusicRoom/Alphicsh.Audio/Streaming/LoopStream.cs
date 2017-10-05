@@ -56,11 +56,13 @@ namespace Alphicsh.Audio.Streaming
 
             // validating the points
             if (streamLoopStart < streamTrackStart)
-                throw new InvalidOperationException("The loop beginning position cannot be lower than the track beginning position.");
+                throw new ArgumentException("The track beginning position cannot come after the loop beginning position.", "Track Start");
             if (streamLoopEnd <= streamLoopStart)
-                throw new InvalidOperationException("The loop end position must come after the loop beginning position.");
+                throw new ArgumentException("The loop beginning position must come before the loop ending position.", "Loop Start");
             if (streamTrackEnd < streamLoopEnd)
-                throw new InvalidOperationException("The track ending position cannot be lower than the loop ending position.");
+                throw new ArgumentException("The loop ending position cannot come after the track ending position.", "Loop End");
+            if (InnerStream.Length < streamTrackEnd * InnerStream.WaveFormat.BlockAlign)
+                throw new ArgumentOutOfRangeException("Track End", "The track ending position cannot come after the inner stream last sample.");
 
             // assigning the stream points
             TrackStart = streamTrackStart;
