@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
@@ -10,6 +11,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 
 using Alphicsh.MusicRoom.Model;
+using Alphicsh.Ston;
 
 namespace Alphicsh.MusicRoom
 {
@@ -43,7 +45,7 @@ namespace Alphicsh.MusicRoom
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            Playlist playlist;
+            Playlist playlist = null;
 
             if (!e.Args.Any())
                 playlist = new Playlist();
@@ -53,9 +55,17 @@ namespace Alphicsh.MusicRoom
                 {
                     playlist = Playlist.Load(e.Args[0]);
                 }
-                catch
+                catch (IOException ex) when (ex is FileNotFoundException || ex is DirectoryNotFoundException)
                 {
-                    playlist = new Playlist();
+                    MessageBox.Show($"Could not find playlist at the following path:\n{e.Args[0]}\n\nThe player will open with default settings.");
+                }
+                catch (StonException)
+                {
+                    MessageBox.Show("The playlist provided is invalid.\n\nThe player will open with default settings.");
+                }
+                finally
+                {
+                    playlist = playlist ?? new Playlist();
                 }
             }
 

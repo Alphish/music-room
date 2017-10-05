@@ -231,12 +231,12 @@ namespace Alphicsh.MusicRoom.Model
         // initializes a playlist item using a corresponding STON value
         private static void InitializeFromSton(IPlaylistItem item, IStonDocument document, IStonComplexEntity entity, IDictionary<IStonValuedEntity, object> builtObjects)
         {
-            item.Name = FromSton<string>(document, GetValue(document, document.GetMember(entity, new StonBindingName("Name"))), builtObjects);
+            item.Name = FromSton<string>(document, GetValue(document, document.GetMember(entity, new StonBindingName("Name"))), builtObjects) ?? item.GetType().Name;
 
             // playlist never declares its path explicitly
             // in general, it should be based on the playlist location instead
             if (!(item is Playlist))
-                item.Path = FromSton<string>(document, GetValue(document, document.GetMember(entity, new StonBindingName("Path"))), builtObjects);
+                item.Path = FromSton<string>(document, GetValue(document, document.GetMember(entity, new StonBindingName("Path"))), builtObjects) ?? "";
 
             // loading subitems of a container
             if (item is IPlaylistContainer)

@@ -46,7 +46,7 @@ namespace Alphicsh.MusicRoom.View
                 }
                 catch (System.IO.IOException ex) when (ex is System.IO.FileNotFoundException || ex is System.IO.DirectoryNotFoundException)
                 {
-                    MessageBox.Show($"Could not find track at the following path:\n{Player.SelectedTrack.FullPath}\n\nRight-click on the track and edit it to change its location.");
+                    MessageBox.Show($"Could not find the track at the following path:\n{Player.SelectedTrack.FullPath}\n\nRight-click on the track and edit it to change its location.");
                 }
             }
         }

@@ -21,6 +21,7 @@ using Alphicsh.MusicRoom.DataContext;
 using Alphicsh.MusicRoom.Model;
 using Alphicsh.MusicRoom.View;
 using Alphicsh.MusicRoom.ViewModel;
+using Alphicsh.Ston;
 
 namespace Alphicsh.MusicRoom
 {
@@ -89,7 +90,20 @@ namespace Alphicsh.MusicRoom
 
             var result = dialog.ShowDialog();
             if (result == CommonFileDialogResult.Ok)
-                Context.Playlist = new PlaylistViewModel(dialog.FileName);
+            {
+                try
+                {
+                    Context.Playlist = new PlaylistViewModel(dialog.FileName);
+                }
+                catch (IOException ex) when (ex is FileNotFoundException || ex is DirectoryNotFoundException)
+                {
+                    MessageBox.Show($"Could not find the playlist at the following path:\n{dialog.FileName}");
+                }
+                catch (StonException)
+                {
+                    MessageBox.Show("The playlist provided is invalid.");
+                }
+            }
         }
 
         // saving the current playlist
@@ -287,7 +301,7 @@ namespace Alphicsh.MusicRoom
                 {
                     DragPoint = null;
                     Preselection = null;
-                    MessageBox.Show($"Could not find track at the following path:\n{item.FullPath}\n\nRight-click on the track and edit it to change its location.");
+                    MessageBox.Show($"Could not find the track at the following path:\n{item.FullPath}\n\nRight-click on the track and edit it to change its location.");
                 }
             }
         }
