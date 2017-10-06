@@ -238,8 +238,17 @@ namespace Alphicsh.MusicRoom
             else
                 index = PlaylistBox.ItemContainerGenerator.IndexFromContainer(element) + (e.GetPosition(element).Y > element.ActualHeight / 2 ? 1 : 0);
 
-            var items = e.Data.GetData(typeof(IEnumerable<IPlaylistItemViewModel>));
-            Context.Playlist.Move(index, items as IEnumerable<IPlaylistItemViewModel>);
+            if (e.Data.GetDataPresent(typeof(IEnumerable<IPlaylistItemViewModel>)))
+            {
+                var items = e.Data.GetData(typeof(IEnumerable<IPlaylistItemViewModel>));
+                Context.Playlist.Move(index, items as IEnumerable<IPlaylistItemViewModel>);
+            }
+            else if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                var filenames = e.Data.GetData(DataFormats.FileDrop) as string[];
+                foreach (var filename in filenames)
+                    Context.Playlist.Add(new TrackViewModel(filename));
+            }
         }
 
         // retrieves the innermost ancestor element of a specific type
