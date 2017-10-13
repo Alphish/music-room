@@ -177,15 +177,23 @@ namespace Alphicsh.MusicRoom.Model
             {
                 // miiiight wanna make this a built-in part of STON library at some point
                 IStonSimpleValue value = (entity as IStonSimpleEntity).Value;
-                int eidx = value.Content.IndexOf('e');
-                string sstr = value.Content.Remove(eidx);
-                string estr = value.Content.Substring(eidx + 1);
+                long result = 0;
+                if (value.Content != "0")
+                {
+                    int eidx = value.Content.IndexOf('e');
+                    string sstr = value.Content.Remove(eidx);
+                    string estr = value.Content.Substring(eidx + 1);
 
-                var result = long.Parse(sstr);
-                var exponent = int.Parse(estr);
-                while (exponent-- > 0)
-                    result *= 10;
-                return result;
+                    result = long.Parse(sstr);
+                    var exponent = int.Parse(estr);
+                    while (exponent-- > 0)
+                        result *= 10;
+                }
+
+                if (clrType == typeof(int) || clrType == typeof(int?))
+                    return (int)result;
+                else
+                    return result;
             }
             else if (clrType == typeof(IPlaylistItem))
             {
