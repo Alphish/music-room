@@ -56,7 +56,7 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <TextBlock Margin="4" TextWrapping="WrapWithOverflow">Shareable playlist uses only relative paths, making it independent from local filesystem. It must stay a specific location, though.<LineBreak/>It can be easily shared in the Internet or included in one's own album!</TextBlock>
+                <TextBlock Margin="4" TextWrapping="WrapWithOverflow">Shareable playlist uses only relative paths, making it independent from local filesystem. It must stay at a specific location, though.<LineBreak/>It can be easily shared in the Internet or included in one's own album!</TextBlock>
                 <Button Grid.Row="1" MaxWidth="128" Click="MakeShareableButton_Click">Make Shareable</Button>
             </Grid>
         </GroupBox>

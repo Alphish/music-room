@@ -321,5 +321,10 @@ namespace Alphicsh.MusicRoom
         }
 
         #endregion
+
+        private void AboutButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show($"Music Room {System.Diagnostics.FileVersionInfo.GetVersionInfo(System.Reflection.Assembly.GetExecutingAssembly().Location).ProductVersion}\nCopyright 2017 Alice Jankowska\n\nSee README file for help.\nSee LICENSE file for full credits and license terms.");
+        }
     }
 }
