@@ -31,7 +31,7 @@ namespace Alphicsh.Audio.Streaming
             LoopEndByte = InnerStream.Length;
             TrackEndByte = InnerStream.Length;
 
-            RemainingLoops = -1;
+            TotalLoops = -1;
         }
 
         /// <summary>
@@ -182,9 +182,23 @@ namespace Alphicsh.Audio.Streaming
 
 
         /// <summary>
-        /// Number of loops remaining to play. If set to -1, the track loops indefinitely.
+        /// Number of loops to play. If set to -1, the track loops indefinitely.
         /// </summary>
-        public int RemainingLoops { get; set; }
+        public int TotalLoops
+        {
+            get => _TotalLoops;
+            set
+            {
+                _TotalLoops = value;
+                RemainingLoops = value;
+            }
+        }
+        private int _TotalLoops;
+
+        /// <summary>
+        /// Number of loops remaining to play. 
+        /// </summary>
+        private int RemainingLoops { get; set; }
 
         /// <summary>
         /// Gets or sets the sample index at the current track position.
@@ -213,16 +227,47 @@ namespace Alphicsh.Audio.Streaming
         /// Gets the length of an entire track.
         /// Note that it's different from underlying stream length if track start/end values are different than default.
         /// </summary>
-        public override long Length => TrackEndByte - TrackStartByte;
+        public override long Length => TrackEndByte - TrackStartByte + (TotalLoops > 0 ? TotalLoops * (LoopEndByte - LoopStartByte) : 0);
 
         /// <summary>
-        /// Gets or sets the current position in the stream.
-        /// Note that it's offset by the track start position.
+        /// Gets or sets the current position in the loop stream.
         /// </summary>
         public override long Position
         {
-            get => InnerStream.Position - TrackStartByte;
-            set => InnerStream.Position = TrackStartByte + value - (value % WaveFormat.BlockAlign);
+            get => InnerStream.Position - TrackStartByte + (TotalLoops > 0 ? (TotalLoops - RemainingLoops) * (LoopEndByte - LoopStartByte) : 0);
+            set
+            {
+                value -= value % WaveFormat.BlockAlign;
+
+                // handle indefinite loops or the limited extension intro
+                if (TotalLoops < 0 || value <= LoopStartByte - TrackStartByte)
+                {
+                    RemainingLoops = TotalLoops;
+                    InnerStream.Position = TrackStartByte + value;
+                }
+                // handle the limited extension
+                else
+                {
+                    // ignoring the intro part
+                    value -= LoopStartByte - TrackStartByte;
+
+                    long singleLoopBytes = LoopEndByte - LoopStartByte;  // the length in bytes of a single loops
+                    long extraLoopBytes = singleLoopBytes * TotalLoops;  // the length in bytes of total repetitions before the track enters its last loop
+
+                    // handling the middle of the extended track
+                    if (value <= extraLoopBytes)
+                    {
+                        RemainingLoops = TotalLoops - (int)(value / singleLoopBytes);
+                        InnerStream.Position = LoopStartByte + value % singleLoopBytes;
+                    }
+                    // handling the last loop and the outro of the extended track
+                    else
+                    {
+                        RemainingLoops = 0;
+                        InnerStream.Position = LoopStartByte + value - extraLoopBytes;
+                    }
+                }
+            }
         }
 
         #endregion

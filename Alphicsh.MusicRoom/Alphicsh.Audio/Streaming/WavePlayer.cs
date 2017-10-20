@@ -128,7 +128,7 @@ namespace Alphicsh.Audio.Streaming
         /// <returns>The position in bytes.</returns>
         public long Position
         {
-            get => CurrentStream?.Position ?? 0;
+            get => (PlaybackState == PlaybackState.Stopped) ? 0 : CurrentStream?.Position ?? 0;
             set
             {
                 var state = PlaybackState;
