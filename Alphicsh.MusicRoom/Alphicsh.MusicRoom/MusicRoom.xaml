@@ -1,0 +1,64 @@
+﻿<Window x:Class="Alphicsh.MusicRoom.MusicRoom"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Alphicsh.MusicRoom.View"
+        mc:Ignorable="d"
+        Title="Music Room" Height="350" Width="525"
+        MouseUp="MusicRoom_MouseUp">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- The playlist controls -->
+        <Menu>
+            <MenuItem Header="_File">
+                <MenuItem Header="Add _tracks" Click="AddTracksButton_Click"/>
+                <Separator/>
+                <MenuItem Header="New playlist" Click="NewPlaylistButton_Click"/>
+                <MenuItem Header="_Load playlist" Click="LoadPlaylistButton_Click"/>
+                <MenuItem Header="_Save playlist" Click="SavePlaylistButton_Click"/>
+                <MenuItem Header="_Manage playlist" Click="ManagePlaylistButton_Click"/>
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="_About" Click="AboutButton_Click"/>
+            </MenuItem>
+        </Menu>
+
+        <!-- The playlist selection -->
+        <ListBox Name="PlaylistBox"
+            Grid.Row="1"
+            ItemsSource="{Binding Playlist}"
+            SelectionChanged="PlaylistBox_SelectionChanged"
+            SelectionMode="Extended"
+            AllowDrop="True" Drop="PlaylistBox_Drop"
+            >
+            <ListBox.Resources>
+                <ContextMenu x:Key="ItemMenu">
+                    <MenuItem Header="Edit" Click="PlaylistItem_EditMenu_Click"/>
+                    <MenuItem Header="Delete" Click="PlaylistItem_DeleteMenu_Click"/>
+                </ContextMenu>
+            </ListBox.Resources>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Name}" IsHitTestVisible="False"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="ContextMenu" Value="{StaticResource ItemMenu}"/>
+                    <EventSetter Event="MouseDoubleClick" Handler="PlaylistItem_DoubleClick"/>
+                    <EventSetter Event="PreviewMouseDown" Handler="PlaylistItem_PreviewMouseDown"/>
+                    <EventSetter Event="PreviewMouseMove" Handler="PlaylistItem_PreviewMouseMove"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
+
+        <!-- The playback controls -->
+        <local:PlayerControl Grid.Row="2" DataContext="{Binding Player}"/>
+    </Grid>
+</Window>

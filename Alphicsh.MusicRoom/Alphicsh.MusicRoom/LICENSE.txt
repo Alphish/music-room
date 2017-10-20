@@ -1,4 +1,4 @@
-Music Room audio player
+﻿Music Room audio player
 Copyright 2017 Alice Jankowska
 
 Made with Visual Studio Community 2017
@@ -21,10 +21,6 @@ Licensed under MS-PL: https://github.com/ioctlLR/NVorbis/blob/master/LICENSE
 NAudio.Vorbis (c) 2015 Andrew Ward
 Project page: https://github.com/naudio/Vorbis
 Licensed under MS-PL: https://github.com/naudio/Vorbis/blob/master/LICENSE
-
-A large portion of uncompiled NAudio.Vorbis source code has been used in the following file:
-Alphicsh.MusicRoom\Alphicsh.Audio\Streaming\VorbisWaveReader.cs
-The copyright notice and license term are listed there as well.
 
 Costura.Fody (c) 2012 Simon Cropp and contributors
 Project page: https://github.com/Fody/Costura

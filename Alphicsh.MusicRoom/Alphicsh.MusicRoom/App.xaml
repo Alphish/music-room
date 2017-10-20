@@ -2,8 +2,39 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:Alphicsh.MusicRoom"
-             StartupUri="MainWindow.xaml">
+             xmlns:converters="clr-namespace:Alphicsh.MusicRoom.Converters">
     <Application.Resources>
-         
+        <!-- General purpose converters -->
+        <converters:SwitchConverter x:Key="SwitchConverter"/>
+        <converters:NumericWithDefaultConverter x:Key="NumericConverter"/>
+        <converters:GridLengthConverter x:Key="GridLengthConverter"/>
+        
+        <!-- Default styles -->
+        <Style TargetType="{x:Type Button}">
+            <Setter Property="Margin" Value="4"/>
+        </Style>
+        <Style TargetType="{x:Type GroupBox}">
+            <Setter Property="Margin" Value="4"/>
+        </Style>
+        <Style TargetType="{x:Type ListBox}">
+            <Setter Property="Margin" Value="4"/>
+        </Style>
+        <Style TargetType="{x:Type ProgressBar}">
+            <Setter Property="Margin" Value="4"/>
+        </Style>
+        <Style TargetType="{x:Type Separator}">
+            <Setter Property="Margin" Value="4"/>
+        </Style>
+        <Style TargetType="{x:Type Slider}">
+            <Setter Property="Margin" Value="4"/>
+        </Style>
+        <Style TargetType="{x:Type TabControl}">
+            <Setter Property="Margin" Value="4"/>
+        </Style>
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="Margin" Value="4"/>
+            <EventSetter Event="KeyDown" Handler="TextBox_KeyDown"/>
+        </Style>
+
     </Application.Resources>
 </Application>
