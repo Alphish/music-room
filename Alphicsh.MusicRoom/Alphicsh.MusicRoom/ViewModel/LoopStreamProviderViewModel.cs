@@ -329,42 +329,63 @@ namespace Alphicsh.MusicRoom.ViewModel
                     _ExpectedStreamLength = value;
                     Notify(nameof(ExpectedStreamLength));
 
-                    Notify(nameof(ExpectedTrackStart));
-                    Notify(nameof(ExpectedLoopStart));
-                    Notify(nameof(ExpectedLoopEnd));
-                    Notify(nameof(ExpectedTrackEnd));
-
-                    Notify(nameof(ExpectedIntroLength));
-                    Notify(nameof(ExpectedLoopLength));
-                    Notify(nameof(ExpectedOutroLength));
+                    UpdateExpectedLoopParameters();
                 }
             }
         }
         private long _ExpectedStreamLength = 1;
 
+        // updates the expected loop parameters
+        // so that they display correctly in the player bar
+        private void UpdateExpectedLoopParameters()
+        {
+            // so far, it's only used in the direct playback context
+            // thus, track start and track end directly correspond to the stream start and stream end
+
+            ExpectedTrackStart = 0;
+            ExpectedTrackEnd = ExpectedStreamLength;
+
+            long innerTrackStart = Math.Max(TrackStart, 0);
+            long innerLoopStart = StreamLoopStart < innerTrackStart ? innerTrackStart : StreamLoopStart;
+            ExpectedLoopStart = innerLoopStart - innerTrackStart;
+
+            if (StreamLoopEnd < 0)
+                ExpectedLoopEnd = ExpectedTrackEnd;
+            else
+                ExpectedLoopEnd = ExpectedLoopStart + (Loops > 0 ? Loops + 1 : 1) * Math.Max(StreamLoopEnd - innerLoopStart, 1);
+
+            Notify(nameof(ExpectedIntroLength));
+            Notify(nameof(ExpectedLoopLength));
+            Notify(nameof(ExpectedOutroLength));
+        }
+
         /// <summary>
         /// Gets the expected track start position, based on expected stream length and given track start value.
         /// </summary>
         public long ExpectedTrackStart
-            => TrackStart < 0 ? 0 : TrackStart >= ExpectedStreamLength ? ExpectedStreamLength - 1 : TrackStart;
+            { get => _ExpectedTrackStart; private set => Set(nameof(ExpectedTrackStart), value); }
+        private long _ExpectedTrackStart = 0;
 
         /// <summary>
         /// Gets the expected loop start position, based on expected stream length and given loop start value.
         /// </summary>
         public long ExpectedLoopStart
-            => StreamLoopStart < ExpectedTrackStart ? ExpectedTrackStart : StreamLoopStart >= ExpectedStreamLength ? ExpectedStreamLength - 1 : StreamLoopStart;
+            { get => _ExpectedLoopStart; private set => Set(nameof(ExpectedLoopStart), value); }
+        private long _ExpectedLoopStart = 0;
 
         /// <summary>
         /// Gets the expected loop end position, based on expected stream length amd given loop end value.
         /// </summary>
         public long ExpectedLoopEnd
-            => StreamLoopEnd < 0 ? ExpectedTrackEnd : StreamLoopEnd > ExpectedTrackEnd ? ExpectedTrackEnd : StreamLoopEnd <= ExpectedLoopStart ? ExpectedLoopStart + 1 : StreamLoopEnd;
+            { get => _ExpectedLoopEnd; private set => Set(nameof(ExpectedLoopEnd), value); }
+        private long _ExpectedLoopEnd = 1;
 
         /// <summary>
-        /// Gets the expected track start position, based on expected stream length and given track end value.
+        /// Gets the expected track end position, based on expected stream length and given track end value.
         /// </summary>
         public long ExpectedTrackEnd
-            => TrackEnd < 0 ? ExpectedStreamLength : TrackEnd <= ExpectedLoopStart ? ExpectedLoopStart + 1 : TrackEnd > ExpectedStreamLength ? ExpectedStreamLength : TrackEnd;
+            { get => _ExpectedTrackEnd; private set => Set(nameof(ExpectedTrackEnd), value); }
+        private long _ExpectedTrackEnd = 1;
 
         /// <summary>
         /// Gets the length of the track intro (the part before the loop).

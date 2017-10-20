@@ -16,6 +16,18 @@ namespace Alphicsh.MusicRoom.ViewModel
     /// </summary>
     public class PlayerViewModel : NotifyPropertyChanged, IDisposable
     {
+        /// <summary>
+        /// Creates a basic music player view model.
+        /// </summary>
+        public PlayerViewModel()
+        {
+            InnerPlayer.PlaybackStopped += (sender, e) =>
+            {
+                Notify(nameof(State));
+                Notify(nameof(Position));
+            };
+        }
+
         // the inner music player
         private WavePlayer InnerPlayer = new WavePlayer();
 

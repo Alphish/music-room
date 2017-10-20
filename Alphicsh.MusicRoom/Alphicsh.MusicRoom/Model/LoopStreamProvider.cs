@@ -86,6 +86,7 @@ namespace Alphicsh.MusicRoom.Model
                 StreamLoopEnd != -1 ? StreamLoopEnd : TrackEnd,
                 TrackEnd
                 );
+            stream.TotalLoops = Loops;
             return stream;
         }
     }
